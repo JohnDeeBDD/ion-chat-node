@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="bd4d3276-3e83-4ca9-97fa-b980611eca2a" name="Mothership">
+        <fileTransfer accessType="SFTP" host="52.14.142.112" port="22" sshConfigId="21605059-6780-4171-8532-2101fe40e69a" sshConfig="ubuntu@52.14.142.112:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="efc375a9-0e66-43d3-b63c-ea8afbcb1fb5" name="Remote Node">
+        <fileTransfer accessType="SFTP" host="3.145.203.189" port="22" sshConfigId="5518cb1f-5645-4686-a67e-ed09681291ad" sshConfig="ubuntu@3.145.203.189:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+    <groups>
+      <group>
+        <name>Ion Group</name>
+        <servers>
+          <name value="Mothership" />
+          <name value="Remote Node" />
+        </servers>
+      </group>
+    </groups>
+  </component>
+</project>

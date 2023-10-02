@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="52.14.142.112" id="21605059-6780-4171-8532-2101fe40e69a" keyPath="$USER_HOME$/sportsman.pem" port="22" nameFormat="DESCRIPTIVE" username="ubuntu"/>
+      <sshConfig host="3.145.203.189" id="5518cb1f-5645-4686-a67e-ed09681291ad" keyPath="$USER_HOME$/sportsman.pem" port="22" nameFormat="DESCRIPTIVE" username="ubuntu"/>
+    </configs>
+  </component>
+</project>

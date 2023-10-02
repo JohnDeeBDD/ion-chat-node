@@ -1,0 +1,20 @@
+{
+  "name" : "Email Tunnel",
+  "slug" : "email-tunnel",
+  "author" : "<a href='https://generalchicken.guru'>General Chicken</a>",
+  "author_profile" : "https://generalchicken.guru",
+  "version" : "2.6",
+  "download_url" : "https://email-tunnel.com/wp-content/uploads/email-tunnel.zip",
+  "requires" : "3.0",
+  "tested" : "6.3",
+  "requires_php" : "7.2",
+  "last_updated" : "2021-02-01 02:10:00",
+  "sections" : {
+    "description" : "Enable email on any site",
+    "installation" : "Click the activate button and that's it."
+  },
+  "banners" : {
+    "low" : "https://rudrastyh.com/wp-content/uploads/updater/banner-772x250.jpg",
+    "high" : "https://rudrastyh.com/wp-content/uploads/updater/banner-1544x500.jpg"
+  }
+}

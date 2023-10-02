@@ -1,0 +1,23 @@
+Development
+
+Starting Development Servers
+cd /var/www/html/wp-content/plugins/email-tunnel
+sudo php startDevServers.php
+
+Starting local servers
+cd /var/www/html/wp-content/plugins/WPbdd
+./startDesktopServers.sh
+
+Stopping Development Servers
+cd /var/www/html/wp-content/plugins/email-tunnel
+sudo php stopEmailTunnel.php
+
+test browser
+bin/codecept run acceptance BrowserIsWorkingCept.php -vvv --html
+
+test js
+npm test
+
+rollup for prod:
+npx spack
+

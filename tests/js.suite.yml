@@ -1,0 +1,25 @@
+actor: JsTester
+modules:
+    enabled:
+        - \Helper\Js
+        - \Helper\Acceptance
+        - Asserts
+        - WPWebDriver
+    config:
+        WPWebDriver:
+            url: 'http://localost'
+            url2: 'http://localhost'
+            window_size: 400, 300
+            #window_size: maximize
+            adminUsername: 'Codeception'
+            adminPassword: 'password'
+            clear_cookies: false
+            adminPath: /wp-admin
+            port: 4444 #chromedriver --url-base=/wd/hub
+            #browser: phantomjs #./phantomjs --webdriver=4444
+            #nohup xvfb-run java -Dwebdriver.chrome.driver=/var/www/html/wp-content/plugins/WPbdd/chromedriver -jar selenium.jar &>/dev/null &
+            ## ^^ requires the corect versions of chromedriver and chrome
+            browser: chrome
+            capabilities:
+                chromeOptions:
+                    args: ["--headless", "--disable-gpu", "--disable-dev-shm-usage", "--no-sandbox", "--incognito"]
