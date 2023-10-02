@@ -40,7 +40,7 @@ $functions = [
     )
 ];
 
-function compile_messages_for_transport_to_ChatGPT($messageIDs, $conversationInitiation = []) {
+function compile_messages_for_transport($messageIDs, $conversationInitiation = []) {
     log_data_to_option($messageIDs, "compile_messages_for_transport_to_ChatGPT");
     $conversationInitiation = [
         ['role' => 'system', 'content' => 'You are a helpful assistant.']
@@ -125,8 +125,8 @@ function getIonReply($thread_id ){
     log_data_to_option($api_key, "api key");
     $message_thread_ids_array = returnArrayOfMessagesThread($thread_id);
     log_data_to_option($message_thread_ids_array, "message thread ids array");
-    $compiled_messages = compile_messages_for_transport_to_ChatGPT($message_thread_ids_array);
-    $response = sendToChatGPT($compiled_messages, $api_key);
+    $compiled_messages = compile_messages_for_transport($message_thread_ids_array);
+    $response = sendUp($compiled_messages, $api_key);
     log_data_to_option($response, "response from GPT");
 
    if(isset( $response["choices"][0]["message"]["content"] )){
@@ -139,7 +139,10 @@ function getIonReply($thread_id ){
 }
 
 function isIonUser($user_id){
-    if($user_id === 3) {
+    $user_info = get_userdata($user_id);
+    $user_email = $user_info->user_email;
+
+    if($user_email === "jiminac@aol.com") {
         return true;
     }else{
         return false;
@@ -164,11 +167,15 @@ function on_message_sent( $message ){
 
     // Message Content
     $content = $message->message;
-    if(isIonUser($user_id)) {
+
+    if(!(doesThreadIncludeIon($thread_id))){
         return;
     }
     getIonReply($thread_id);
+}
 
+function doesThreadIncludeIon($thread_id){
+    return true;
 }
 
 /**
@@ -199,9 +206,14 @@ function returnArrayOfMessagesThread($thread_id = 1, $last = 1000): array {
     return array_map('intval', $results);
 }
 
-function sendToChatGPT($messages, $api_key, $functions = null) {
+function get_mothership_url(){
+    //"https://api.openai.com/v1/chat/completions";
+    return "http://52.14.142.112";
+}
+
+function sendUp($messages, $api_key, $functions = null) {
     // OpenAI API endpoint for ChatGPT
-    $url = "https://api.openai.com/v1/chat/completions";
+    $url = get_mothership_url();
 
     // Ensure messages is an array
     $messages = is_object($messages) ? (array) $messages : $messages;
@@ -271,92 +283,6 @@ function transformNicename($niceName){
         $niceName = "user";
     }
     return $niceName;
-}
-
-//MotherShip:
-
-function create_ion_city_connections_table() {
-    global $wpdb;
-
-    // Table name with WP prefix
-    $table_name = $wpdb->prefix . 'ion_city_connections';
-
-    // Check if the table already exists
-    if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
-
-        // SQL to create the table
-        $charset_collate = $wpdb->get_charset_collate();
-
-        $sql = "CREATE TABLE $table_name (
-            id INT NOT NULL AUTO_INCREMENT,
-            connection VARCHAR(255) NOT NULL,
-            remote_id INT NOT NULL,
-            PRIMARY KEY (id)
-        ) $charset_collate;";
-
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
-    }
-}
-
-function get_local_id($connection_url, $remote_id) {
-    global $wpdb;
-
-    // Table name with WP prefix
-    $table_name = $wpdb->prefix . 'ion_city_connections';
-
-    // Query the database
-    $local_id = $wpdb->get_var($wpdb->prepare(
-        "SELECT id FROM $table_name WHERE connection = %s AND remote_id = %d",
-        $connection_url,
-        $remote_id
-    ));
-
-    return $local_id ? $local_id : null; // Return the local id if found, otherwise return null
-}
-
-function get_remote_id($connection_url, $local_id) {
-    global $wpdb;
-
-    // Table name with WP prefix
-    $table_name = $wpdb->prefix . 'ion_city_connections';
-
-    // Query the database
-    $remote_id = $wpdb->get_var($wpdb->prepare(
-        "SELECT remote_id FROM $table_name WHERE connection = %s AND id = %d",
-        $connection_url,
-        $local_id
-    ));
-
-    return $remote_id ? $remote_id : null; // Return the remote id if found, otherwise return null
-}
-
-function createConnection($connectionUrl, $remote_id) {
-    global $wpdb;
-
-    // Table name with WP prefix
-    $table_name = $wpdb->prefix . 'ion_city_connections';
-
-    // Insert the data into the table
-    $inserted = $wpdb->insert(
-        $table_name,
-        array(
-            'connection' => $connectionUrl,
-            'remote_id'  => $remote_id
-        ),
-        array(
-            '%s', // Format for connection (string)
-            '%d'  // Format for remote_id (integer)
-        )
-    );
-
-    // If insertion was successful, return the ID of the newly created record
-    if ($inserted) {
-        return $wpdb->insert_id;
-    }
-
-    // If there was an error, return null or handle the error as needed
-    return null;
 }
 
 if(isset($_GET['b'])){
